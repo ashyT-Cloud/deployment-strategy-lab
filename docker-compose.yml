@@ -1,0 +1,26 @@
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: deployment-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app-blue
+      - app-green
+
+  app-blue:
+    image: deployment-strategy-lab:v1
+    container_name: deployment-app-blue
+    environment:
+      APP_VERSION: v1.0
+      ENVIRONMENT: blue
+
+  app-green:
+    image: deployment-strategy-lab:v2
+    container_name: deployment-app-green
+    environment:
+      APP_VERSION: v2.0
+      ENVIRONMENT: green
